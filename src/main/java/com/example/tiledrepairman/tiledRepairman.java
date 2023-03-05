@@ -9,6 +9,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.io.File;
+import java.sql.Timestamp;
 import java.util.Collection;
 
 @SpringBootApplication
@@ -30,7 +31,7 @@ public class tiledRepairman implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        System.out.println("Starting up TiledRepairman at " + System.currentTimeMillis());
+        System.out.println("Starting up TiledRepairman at " + new Timestamp(System.currentTimeMillis()));
 
         // get all TMX files
         Collection<File> oldTMXFiles = s3IOController.getAllTMXFiles();
@@ -44,7 +45,7 @@ public class tiledRepairman implements CommandLineRunner {
         // rename new TMX maps to old TMX names
         windowsFileController.renameTmxFiles();
 
-        System.out.println("All maps exported/resaved.");
+        System.out.println(new Timestamp(System.currentTimeMillis()) + "All maps exported/resaved.");
 
         // not sure why we need this
         System.exit(0);
