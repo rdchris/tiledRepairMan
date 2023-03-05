@@ -49,6 +49,7 @@ public class WindowsBatchController {
         for (File file : tmxFiles) {
             String name = file.getAbsolutePath();
             name = name.replace(".tmx","-renamed.tmx");
+
             builder.command("C:\\Program Files\\Tiled\\tiled.exe","--export-map", file.getAbsolutePath(), name);
 
             Process process = builder.start();
@@ -58,17 +59,30 @@ public class WindowsBatchController {
             assert exitCode == 0;
             future.get(10, TimeUnit.SECONDS);
 
+            //Process process = new ProcessBuilder("C:\\Program Files\\Tiled\\tiled.exe","--export-map",file.getAbsolutePath(),name).start();
 
-            //file.delete();
+            file.delete();
 
         }
 
 
         Collection<File> renamedTmxFiles = FileUtils.listFiles(
                 mapsDirectory,
-                new RegexFileFilter("^(.*-renamedtmx)"),
+                new RegexFileFilter("^(.*tmx)"),
                 DirectoryFileFilter.DIRECTORY
         );
+
+        for (File file : renamedTmxFiles) {
+
+            String name = file.getAbsolutePath();
+            name = name.replace("-renamed.tmx",".tmx");
+            File newFile = new File(name);
+
+            file.renameTo(newFile);
+
+        }
+
+
 
 
 
