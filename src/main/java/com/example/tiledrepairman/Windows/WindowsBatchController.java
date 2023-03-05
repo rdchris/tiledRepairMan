@@ -20,21 +20,50 @@ public class WindowsBatchController {
     public void createNewTMXMapsUsingTiledCLI(Collection<File> allTMXFiles) throws IOException, InterruptedException, ExecutionException, TimeoutException {
         ProcessBuilder builder = new ProcessBuilder();
 
-        for (File file : allTMXFiles) {
-            String name = file.getAbsolutePath();
-            name = name.replace(".tmx", "-renamed.tmx");
+//        for (File file : allTMXFiles) {
+//            String name = file.getAbsolutePath();
+//            name = name.replace(".tmx", "-renamed.tmx");
+//
+//            System.out.println("launching tiled on: " + file.getAbsolutePath());
+//            builder.command("C:\\Program Files\\Tiled\\tiled.exe", "--export-map", "--new-instance", file.getAbsolutePath(), name);
+//
+//            Process process = builder.start();
+//            StreamGobbler streamGobbler = new StreamGobbler(process.getInputStream(), System.out::println);
+//            Future<?> future = Executors.newSingleThreadExecutor().submit(streamGobbler);
+//            int exitCode = process.waitFor();
+//            assert exitCode == 0;
+//            future.get(10, TimeUnit.SECONDS);
+//        }
 
-            System.out.println("launching tiled on: " + file.getAbsolutePath());
-            builder.command("C:\\Program Files\\Tiled\\tiled.exe", "--export-map", file.getAbsolutePath(), name);
+        allTMXFiles.forEach((tmxFile -> {
+            Thread thread = new Thread(() -> {
+                String name = tmxFile.getAbsolutePath();
+                name = name.replace(".tmx", "-renamed.tmx");
 
-            Process process = builder.start();
-            StreamGobbler streamGobbler = new StreamGobbler(process.getInputStream(), System.out::println);
-            Future<?> future = Executors.newSingleThreadExecutor().submit(streamGobbler);
-            int exitCode = process.waitFor();
-            assert exitCode == 0;
-            future.get(10, TimeUnit.SECONDS);
+                System.out.println("launching tiled on: " + tmxFile.getAbsolutePath());
+                builder.command("C:\\Program Files\\Tiled\\tiled.exe", "--export-map", "--new-instance", tmxFile.getAbsolutePath(), name);
 
-        }
+                Process process = null;
+                try {
+                    process = builder.start();
+                    StreamGobbler streamGobbler = new StreamGobbler(process.getInputStream(), System.out::println);
+                    Future<?> future = Executors.newSingleThreadExecutor().submit(streamGobbler);
+                    int exitCode = process.waitFor();
+                    assert exitCode == 0;
+                    future.get(10, TimeUnit.SECONDS);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                } catch (ExecutionException e) {
+                    throw new RuntimeException(e);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                } catch (TimeoutException e) {
+                    throw new RuntimeException(e);
+                }
+
+            });
+            thread.start();
+        }));
 
     }
 }

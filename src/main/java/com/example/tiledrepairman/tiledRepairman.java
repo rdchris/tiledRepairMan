@@ -30,6 +30,8 @@ public class tiledRepairman implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
+        System.out.println("Starting up TiledRepairman at " + System.currentTimeMillis());
+
         // get all TMX files
         Collection<File> oldTMXFiles = s3IOController.getAllTMXFiles();
 
