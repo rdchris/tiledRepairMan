@@ -33,6 +33,9 @@ public class WindowsFileController {
             }
         }
 
+        // This is extremely ugly.. I apologize...
+        // The windows cmd process to fire the Tiled CLI is totally async, thus it might still have the file locked.
+        // If this happens we need to just rerunning this method until they are all deleted.
         if (needToRerun) {
             deleteOldTmxFiles(oldTmxFiles);
         }
