@@ -29,7 +29,7 @@ public class WindowsFileController {
             if (fileNext.delete()) {
                 iterator.remove();
             } else {
-                System.out.println(new Timestamp(System.currentTimeMillis()) + " File was not deleted .. " + fileNext.getAbsolutePath() + " try again!");
+                System.out.println(new Timestamp(System.currentTimeMillis()) + " File was not deleted .. " + fileNext.getAbsolutePath() + " get a better OS loser, try again!");
                 needToRerun = true;
             }
         }
