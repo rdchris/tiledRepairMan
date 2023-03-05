@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.Iterator;
 
 @Component
 public class WindowsFileController {
@@ -18,19 +19,30 @@ public class WindowsFileController {
     private String s3Location;
 
     public static void deleteOldTmxFiles(Collection<File> oldTmxFiles) {
-        for (File fileToDelete : oldTmxFiles) {
-            System.out.println(new Timestamp(System.currentTimeMillis()) + " Deleting file : " + fileToDelete.getAbsolutePath());
-            if (fileToDelete.delete()) {
-                oldTmxFiles.remove(fileToDelete);
+        Iterator<File> iterator = oldTmxFiles.iterator();
+
+        while (iterator.hasNext()) {
+            File fileNext = iterator.next();
+            if (fileNext.delete()) {
+                oldTmxFiles.remove(fileNext);
             } else {
-                System.out.println(new Timestamp(System.currentTimeMillis()) + " File was not deleted .. " + fileToDelete.getAbsolutePath() + " get a better OS loser");
+                System.out.println(new Timestamp(System.currentTimeMillis()) + " File was not deleted .. " + fileNext.getAbsolutePath() + " get a better OS loser");
             }
         }
 
-        // infinite loop baby :D
-        if (oldTmxFiles.size() > 0) {
-            deleteOldTmxFiles(oldTmxFiles);
-        }
+//        for (File fileToDelete : oldTmxFiles) {
+//            System.out.println(new Timestamp(System.currentTimeMillis()) + " Deleting file : " + fileToDelete.getAbsolutePath());
+//            if (fileToDelete.delete()) {
+//                oldTmxFiles.remove(fileToDelete);
+//            } else {
+//                System.out.println(new Timestamp(System.currentTimeMillis()) + " File was not deleted .. " + fileToDelete.getAbsolutePath() + " get a better OS loser");
+//            }
+//        }
+//
+//        // infinite loop baby :D
+//        if (oldTmxFiles.size() > 0) {
+//            deleteOldTmxFiles(oldTmxFiles);
+//        }
 
     }
 
