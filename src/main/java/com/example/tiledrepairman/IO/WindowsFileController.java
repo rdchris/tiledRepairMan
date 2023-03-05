@@ -24,7 +24,7 @@ public class WindowsFileController {
         while (iterator.hasNext()) {
             File fileNext = iterator.next();
             if (fileNext.delete()) {
-                oldTmxFiles.remove(fileNext);
+                iterator.remove();
             } else {
                 System.out.println(new Timestamp(System.currentTimeMillis()) + " File was not deleted .. " + fileNext.getAbsolutePath() + " get a better OS loser");
             }
