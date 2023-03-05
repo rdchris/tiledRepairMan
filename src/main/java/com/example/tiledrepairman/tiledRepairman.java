@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.io.File;
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.concurrent.TimeUnit;
 
 @SpringBootApplication
 public class tiledRepairman implements CommandLineRunner {
@@ -39,8 +40,18 @@ public class tiledRepairman implements CommandLineRunner {
         // create new TMX maps
         windowsBatchController.createNewTMXMapsUsingTiledCLI(oldTMXFiles);
 
+        // this is dumb but the OS is still holding a file pointer, thus
+        // we need to wait until it's given it up
+        // TODO use a cleaner solution that checks for the availability of files!~
+        TimeUnit.SECONDS.sleep(5);
+
         // delete all TMX maps
         WindowsFileController.deleteOldTmxFiles(oldTMXFiles);
+
+        // this is dumb but the OS is still holding a file pointer, thus
+        // we need to wait until it's given it up
+        // TODO use a cleaner solution that checks for the availability of files!~
+        TimeUnit.SECONDS.sleep(5);
 
         // rename new TMX maps to old TMX names
         windowsFileController.renameTmxFiles();

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.sql.Timestamp;
 import java.util.Collection;
 
 @Component
@@ -18,7 +19,7 @@ public class WindowsFileController {
 
     public static void deleteOldTmxFiles(Collection<File> oldTmxFiles) {
         for (File fileToDelete : oldTmxFiles) {
-            System.out.println("Deleting file : " + fileToDelete.getAbsolutePath());
+            System.out.println(new Timestamp(System.currentTimeMillis()) + " Deleting file : " + fileToDelete.getAbsolutePath());
             fileToDelete.delete();
         }
     }
@@ -36,7 +37,7 @@ public class WindowsFileController {
             name = name.replace("-renamed.tmx", ".tmx");
             File newFile = new File(name);
 
-            System.out.println("renaming: " + file.getAbsolutePath() + " to: " + newFile.getAbsolutePath());
+            System.out.println(new Timestamp(System.currentTimeMillis()) + " renaming: " + file.getAbsolutePath() + " to: " + newFile.getAbsolutePath());
             file.renameTo(newFile);
 
         }
