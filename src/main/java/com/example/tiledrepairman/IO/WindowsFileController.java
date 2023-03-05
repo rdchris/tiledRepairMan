@@ -20,8 +20,18 @@ public class WindowsFileController {
     public static void deleteOldTmxFiles(Collection<File> oldTmxFiles) {
         for (File fileToDelete : oldTmxFiles) {
             System.out.println(new Timestamp(System.currentTimeMillis()) + " Deleting file : " + fileToDelete.getAbsolutePath());
-            fileToDelete.delete();
+            if (fileToDelete.delete()) {
+                oldTmxFiles.remove(fileToDelete);
+            } else {
+                System.out.println(new Timestamp(System.currentTimeMillis()) + " File was not deleted .. " + fileToDelete.getAbsolutePath() + " get a better OS loser");
+            }
         }
+
+        // infinite loop baby :D
+        if (oldTmxFiles.size() > 0) {
+            deleteOldTmxFiles(oldTmxFiles);
+        }
+
     }
 
     public void renameTmxFiles() {
