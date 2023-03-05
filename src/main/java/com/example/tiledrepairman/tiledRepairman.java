@@ -31,13 +31,13 @@ public class tiledRepairman implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         // get all TMX files
-        Collection<File> allTMXFiles = s3IOController.getAllTMXFiles();
+        Collection<File> oldTMXFiles = s3IOController.getAllTMXFiles();
 
         // create new TMX maps
-        Collection<File> oldTmxFiles = windowsBatchController.createNewTMXMapsUsingTiledCLI(allTMXFiles);
+        windowsBatchController.createNewTMXMapsUsingTiledCLI(oldTMXFiles);
 
         // delete all TMX maps
-        WindowsFileController.deleteOldTmxFiles(oldTmxFiles);
+        WindowsFileController.deleteOldTmxFiles(oldTMXFiles);
 
         // rename new TMX maps to old TMX names
         windowsFileController.renameTmxFiles();

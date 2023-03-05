@@ -17,7 +17,7 @@ public class WindowsBatchController {
     @Value("${s3.location}")
     private String s3Location;
 
-    public Collection<File> createNewTMXMapsUsingTiledCLI(Collection<File> allTMXFiles) throws IOException, InterruptedException, ExecutionException, TimeoutException {
+    public void createNewTMXMapsUsingTiledCLI(Collection<File> allTMXFiles) throws IOException, InterruptedException, ExecutionException, TimeoutException {
         ProcessBuilder builder = new ProcessBuilder();
 
         for (File file : allTMXFiles) {
@@ -34,12 +34,7 @@ public class WindowsBatchController {
             assert exitCode == 0;
             future.get(10, TimeUnit.SECONDS);
 
-            //Process process = new ProcessBuilder("C:\\Program Files\\Tiled\\tiled.exe","--export-map",file.getAbsolutePath(),name).start();
-
-
         }
-
-        return allTMXFiles;
 
     }
 }
