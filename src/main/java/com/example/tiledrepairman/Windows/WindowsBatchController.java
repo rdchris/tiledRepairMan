@@ -50,6 +50,7 @@ public class WindowsBatchController {
             String name = file.getAbsolutePath();
             name = name.replace(".tmx","-renamed.tmx");
 
+            System.out.println("launching tiled on: "+file.getAbsolutePath());
             builder.command("C:\\Program Files\\Tiled\\tiled.exe","--export-map", file.getAbsolutePath(), name);
 
             Process process = builder.start();
@@ -78,12 +79,13 @@ public class WindowsBatchController {
             name = name.replace("-renamed.tmx",".tmx");
             File newFile = new File(name);
 
+            System.out.println("renaming: "+file.getAbsolutePath()+" to: "+newFile.getAbsolutePath());
             file.renameTo(newFile);
 
         }
 
 
-
+        System.out.println("All maps exported/resaved.");
 
 
 

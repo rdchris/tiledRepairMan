@@ -26,5 +26,6 @@ public class tiledRepairman implements CommandLineRunner {
         //Collection<File> allTMXFiles = s3IOController.getAllTMXFiles();
 
         windowsBatchController.test();
+        System.exit(0);
     }
 }
