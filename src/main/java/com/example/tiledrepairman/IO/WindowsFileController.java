@@ -11,6 +11,7 @@ import java.io.File;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class WindowsFileController {
@@ -18,7 +19,7 @@ public class WindowsFileController {
     @Value("${s3.location}")
     private String s3Location;
 
-    public static void deleteOldTmxFiles(Collection<File> oldTmxFiles) {
+    public static void deleteOldTmxFiles(Collection<File> oldTmxFiles) throws InterruptedException {
         Iterator<File> iterator = oldTmxFiles.iterator();
 
         boolean needToRerun = false;
@@ -28,7 +29,7 @@ public class WindowsFileController {
             if (fileNext.delete()) {
                 iterator.remove();
             } else {
-                System.out.println(new Timestamp(System.currentTimeMillis()) + " File was not deleted .. " + fileNext.getAbsolutePath() + " get a better OS loser");
+                System.out.println(new Timestamp(System.currentTimeMillis()) + " File was not deleted .. " + fileNext.getAbsolutePath() + " try again!");
                 needToRerun = true;
             }
         }
@@ -37,6 +38,7 @@ public class WindowsFileController {
         // The windows cmd process to fire the Tiled CLI is totally async, thus it might still have the file locked.
         // If this happens we need to just rerunning this method until they are all deleted.
         if (needToRerun) {
+            TimeUnit.SECONDS.sleep(1);
             deleteOldTmxFiles(oldTmxFiles);
         }
 
