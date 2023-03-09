@@ -45,6 +45,22 @@ public class WindowsFileController {
 
     }
 
+    public void deleteAllTempFiles() {
+        Collection<File> renamedTmxFiles = FileUtils.listFiles(
+                new File(s3Location),
+                new RegexFileFilter("^(.*-renamed.tmx)"),
+                DirectoryFileFilter.DIRECTORY
+        );
+
+        Iterator<File> iterator = renamedTmxFiles.iterator();
+
+        while (iterator.hasNext()) {
+            File next = iterator.next();
+            System.out.println("Deleting temp file " + next.getAbsolutePath());
+            next.delete();
+        }
+    }
+
     public void renameTmxFiles() {
         Collection<File> renamedTmxFiles = FileUtils.listFiles(
                 new File(s3Location),
