@@ -16,7 +16,7 @@ public class RepairmanStatusController {
 
     private Integer filesConfirmedCreated;
     int retryCount = 0;
-    private static final int MAX_RETRY_COUNT = 50;
+    private static final int MAX_RETRY_COUNT = 500;
 
     public boolean areFilesReadyForDelete(Collection<File> oldTmxFiles) throws InterruptedException {
         int filesCountFromOldTmxFiles = oldTmxFiles.size();
