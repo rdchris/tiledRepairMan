@@ -64,7 +64,7 @@ public class RepairmanStatusController {
                 filesConfirmedCreated++;
                 iterator.remove();
             } else {
-                System.out.println(new Timestamp(System.currentTimeMillis()) + " File was not created yet .. " + name + " will recheck in 5 seconds";
+                System.out.println(new Timestamp(System.currentTimeMillis()) + " File was not created yet .. " + name + " will recheck in 5 seconds");
                 needToRerun = true;
             }
         }
