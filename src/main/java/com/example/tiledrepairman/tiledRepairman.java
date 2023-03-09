@@ -45,7 +45,9 @@ public class tiledRepairman implements CommandLineRunner {
 
         boolean areFilesReadyForDelete = repairmanStatusController.areFilesReadyForDelete(oldTMXFiles);
 
-        if (areFilesReadyForDelete) {
+        // Not all files were prepared properly, lets fail and delete the temp files
+        if (!areFilesReadyForDelete) {
+            windowsFileController.deleteAllTempFiles();
             this.printFailedMessage();
             return;
         }
