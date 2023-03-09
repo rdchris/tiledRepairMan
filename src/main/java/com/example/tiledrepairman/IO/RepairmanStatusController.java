@@ -39,7 +39,7 @@ public class RepairmanStatusController {
         while (iterator.hasNext()) {
             File fileNext = iterator.next();
             String name = fileNext.getAbsolutePath();
-            name.replace(".tmx", "-renamed.tmx");
+            name = name.replace(".tmx", "-renamed.tmx");
             if (Files.exists(Path.of(name))) {
                 System.out.println("File " + name + " was found to have been created!");
                 filesConfirmedCreated++;
