@@ -18,6 +18,9 @@ public class WindowsBatchController {
     @Value("${s3.location}")
     private String s3Location;
 
+    @Value("${sleepBetweenLaunchingThreads:0}")
+    private int sleepBetwenLaunchingThreadsInMillis;
+
     private CompletableFuture<String> future;
 
     public void createNewTMXMapsUsingTiledCLI(Collection<File> allTMXFiles) throws IOException, InterruptedException, ExecutionException, TimeoutException {
@@ -30,7 +33,7 @@ public class WindowsBatchController {
                 name = name.replace(".tmx", "-renamed.tmx");
 
                 System.out.println("launching tiled on: " + tmxFile.getAbsolutePath());
-                builder.command("C:\\Program Files\\Tiled\\tiled.exe", "--export-map", "--new-instance", tmxFile.getAbsolutePath(), name);
+                builder.command("C:\\Program Files\\Tiled\\tiled.exe", "--export-map", tmxFile.getAbsolutePath(), name);
 
                 Process process = null;
                 try {
@@ -49,9 +52,14 @@ public class WindowsBatchController {
                 } catch (TimeoutException e) {
                     throw new RuntimeException(e);
                 }
+
                 return null;
             });
-
+            try {
+                Thread.sleep(sleepBetwenLaunchingThreadsInMillis);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }));
 
         future.get();
