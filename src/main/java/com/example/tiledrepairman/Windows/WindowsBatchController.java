@@ -30,7 +30,7 @@ public class WindowsBatchController {
                 name = name.replace(".tmx", "-renamed.tmx");
 
                 System.out.println("launching tiled on: " + tmxFile.getAbsolutePath());
-                builder.command("C:\\Program Files\\Tiled\\tiled.exe", "--export-map", "--new-instance", tmxFile.getAbsolutePath(), name);
+                builder.command("C:\\Program Files\\Tiled\\tiled.exe", "--export-map", tmxFile.getAbsolutePath(), name);
 
                 Process process = null;
                 try {
