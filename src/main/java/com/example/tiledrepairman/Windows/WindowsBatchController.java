@@ -30,7 +30,7 @@ public class WindowsBatchController {
                 name = name.replace(".tmx", "-renamed.tmx");
 
                 System.out.println("launching tiled on: " + tmxFile.getAbsolutePath());
-                builder.command("C:\\Program Files\\Tiled\\tiled.exe", "--export-map", tmxFile.getAbsolutePath(), name);
+                builder.command("/usr/bin/flatpak","run","--branch=stable","--arch=x86_64","--command=tiled","--file-forwarding","org.mapeditor.Tiled","--export-map", tmxFile.getAbsolutePath(), name);
 
                 Process process = null;
                 try {
@@ -39,7 +39,7 @@ public class WindowsBatchController {
                     Future<?> future = Executors.newSingleThreadExecutor().submit(streamGobbler);
                     int exitCode = process.waitFor();
                     assert exitCode == 0;
-                    future.get(10, TimeUnit.SECONDS);
+                    future.get(60, TimeUnit.SECONDS);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 } catch (ExecutionException e) {
@@ -55,6 +55,8 @@ public class WindowsBatchController {
         }));
 
         future.get();
+
+
 
     }
 }
