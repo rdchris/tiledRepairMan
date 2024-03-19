@@ -18,13 +18,13 @@ public class WindowsBatchController {
     @Value("${s3.location}")
     private String s3Location;
 
-    private CompletableFuture<String> future;
+
 
     public void createNewTMXMapsUsingTiledCLI(Collection<File> allTMXFiles) throws IOException, InterruptedException, ExecutionException, TimeoutException {
         ProcessBuilder builder = new ProcessBuilder();
 
         allTMXFiles.forEach((tmxFile -> {
-            future = CompletableFuture.supplyAsync(() -> {
+
                 String name = tmxFile.getAbsolutePath();
                 System.out.println(new Timestamp(System.currentTimeMillis()) + " creating new version of " + name);
                 name = name.replace(".tmx", "-renamed.tmx");
@@ -49,14 +49,7 @@ public class WindowsBatchController {
                 } catch (TimeoutException e) {
                     throw new RuntimeException(e);
                 }
-                return null;
-            });
 
         }));
-
-        future.get();
-
-
-
     }
 }
